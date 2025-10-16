@@ -75,6 +75,17 @@
   background: #cbd6e0;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .format-section {
   margin-top: 15px;
   text-align: center;

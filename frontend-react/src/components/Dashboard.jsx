@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import './Dashboard.css'
 
-function Dashboard({ analytics, statusMessage, onImport, onProcessAll }) {
+function Dashboard({ analytics, statusMessage, onImport, onProcessAll, disableActions }) {
   const fileInputRef = useRef(null)
   const [showFormat, setShowFormat] = useState(false)
 
@@ -81,11 +81,19 @@ function Dashboard({ analytics, statusMessage, onImport, onProcessAll }) {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <button className="btn btn-primary" onClick={handleImportClick}>
+          <button 
+            className="btn btn-primary" 
+            onClick={handleImportClick}
+            disabled={disableActions}
+          >
             📁 Import Email Threads
           </button>
-          <button className="btn btn-secondary" onClick={onProcessAll}>
-            Process All Threads
+          <button 
+            className="btn btn-secondary" 
+            onClick={onProcessAll}
+            disabled={disableActions}
+          >
+            {disableActions ? '⏳ Processing...' : 'Process All Threads'}
           </button>
         </div>
         <div className="format-section">

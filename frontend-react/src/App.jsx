@@ -8,6 +8,7 @@ import ReviewSummaries from './components/ReviewSummaries'
 import ApprovedSummaries from './components/ApprovedSummaries'
 import ThreadModal from './components/ThreadModal'
 import SummaryModal from './components/SummaryModal'
+import ProgressBar from './components/ProgressBar'
 import './App.css'
 
 const API_BASE_URL = '/api'
@@ -22,6 +23,7 @@ function App() {
   const [showThreadModal, setShowThreadModal] = useState(false)
   const [showSummaryModal, setShowSummaryModal] = useState(false)
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' })
+  const [processing, setProcessing] = useState({ active: false, current: 0, total: 0, message: '' })
 
   useEffect(() => {
     loadAnalytics()
@@ -136,21 +138,40 @@ function App() {
         return
       }
 
-      showSuccess(`Processing ${threadsToProcess.length} threads...`)
+      // Initialize progress
+      setProcessing({
+        active: true,
+        current: 0,
+        total: threadsToProcess.length,
+        message: 'Processing threads...'
+      })
 
+      let processed = 0
       for (const thread of threadsToProcess) {
         try {
           await api.post(`/threads/${thread.thread_id}/summarize`)
+          processed++
+          
+          // Update progress
+          setProcessing({
+            active: true,
+            current: processed,
+            total: threadsToProcess.length,
+            message: `Processing thread ${processed} of ${threadsToProcess.length}...`
+          })
         } catch (error) {
           console.error(`Failed to process thread ${thread.thread_id}:`, error)
         }
       }
 
-      showSuccess(`Successfully processed ${threadsToProcess.length} threads!`)
+      // Complete
+      setProcessing({ active: false, current: 0, total: 0, message: '' })
+      showSuccess(`Successfully processed ${processed} threads!`)
       loadAnalytics()
       loadSummaries()
       setActiveTab('review')
     } catch (error) {
+      setProcessing({ active: false, current: 0, total: 0, message: '' })
       showError('Failed to process threads: ' + error.message)
     }
   }
@@ -167,13 +188,31 @@ function App() {
 
   const summarizeThread = async (threadId) => {
     try {
-      showSuccess('Generating summary... This may take a moment.')
+      setProcessing({
+        active: true,
+        current: 0,
+        total: 1,
+        message: 'Generating summary...'
+      })
+      
       await api.post(`/threads/${threadId}/summarize`)
-      showSuccess('Summary generated successfully!')
-      loadAnalytics()
-      loadSummaries()
-      setActiveTab('review')
+      
+      setProcessing({
+        active: true,
+        current: 1,
+        total: 1,
+        message: 'Summary complete!'
+      })
+      
+      setTimeout(() => {
+        setProcessing({ active: false, current: 0, total: 0, message: '' })
+        showSuccess('Summary generated successfully!')
+        loadAnalytics()
+        loadSummaries()
+        setActiveTab('review')
+      }, 500)
     } catch (error) {
+      setProcessing({ active: false, current: 0, total: 0, message: '' })
       showError('Failed to generate summary: ' + error.message)
     }
   }
@@ -274,12 +313,20 @@ function App() {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="tab-content-container">
+        {processing.active && (
+          <ProgressBar 
+            current={processing.current}
+            total={processing.total}
+            message={processing.message}
+          />
+        )}
         {activeTab === 'dashboard' && (
           <Dashboard
             analytics={analytics}
             statusMessage={statusMessage}
             onImport={importThreads}
             onProcessAll={processAllThreads}
+            disableActions={processing.active}
           />
         )}
 
