@@ -1,0 +1,11 @@
+.review-summaries h2 {
+  margin-bottom: 30px;
+  color: #1c2938;
+}
+
+.summaries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+

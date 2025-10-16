@@ -1,0 +1,99 @@
+.summary-card {
+  background: white;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  padding: 25px;
+  transition: all 0.3s;
+}
+
+.summary-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 15px;
+}
+
+.summary-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.badge-success {
+  background: #d4f4e4;
+  color: #13a555;
+}
+
+.badge-warning {
+  background: #fff4e6;
+  color: #ff9500;
+}
+
+.badge-danger {
+  background: #ffe0e8;
+  color: #e0245e;
+}
+
+.badge-info {
+  background: #e1f5fe;
+  color: #0288d1;
+}
+
+.summary-content {
+  margin-top: 20px;
+}
+
+.summary-section {
+  margin-bottom: 20px;
+}
+
+.summary-section h4 {
+  color: #667eea;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.summary-section p {
+  color: #1c2938;
+  line-height: 1.6;
+}
+
+.tag-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 6px 12px;
+  background: #e8edff;
+  color: #667eea;
+  border-radius: 16px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.btn-success {
+  background: #17bf63;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #13a555;
+}
+
+.btn-danger {
+  background: #e0245e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c61e4f;
+}
+

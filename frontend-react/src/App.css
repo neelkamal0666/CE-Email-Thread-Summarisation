@@ -1,0 +1,10 @@
+.tab-content-container {
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .tab-content-container {
+    padding: 20px;
+  }
+}
+
